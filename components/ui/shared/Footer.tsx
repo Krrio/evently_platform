@@ -15,7 +15,7 @@ import Image from "next/image"
           />
         </Link>
 
-        <p>2023 Evently. All rights reserved.</p>
+        <p>2024 RezerwujTo. All rights reserved.</p>
       </div>
     </footer>
   )

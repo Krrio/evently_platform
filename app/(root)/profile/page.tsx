@@ -1,15 +1,25 @@
 import { Button } from '@/components/ui/button'
 import Collection from '@/components/ui/shared/Collection'
 import { getAllEvents, getEventsByUser } from '@/lib/actions/event.actions'
+import { getOrdersByUser } from '@/lib/actions/order.action'
+import { IOrder } from '@/lib/database/models/order.model'
+import { SearchParamProps } from '@/types'
 import { auth } from '@clerk/nextjs'
 import Link from 'next/link'
 import React from 'react'
 
-const ProfilePage = async () => {
+const ProfilePage = async ({ searchParams }: SearchParamProps) => {
     const { sessionClaims } = auth();
     const userId = sessionClaims?.userId as string;
 
-    const organizedEvents = await getEventsByUser({ userId, page: 1 })
+    const ordersPage = Number(searchParams?.ordersPage) || 1;
+    const eventsPage = Number(searchParams?.eventsPage) || 1;
+
+
+    const orders = await getOrdersByUser({ userId, page: ordersPage })
+
+    const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
+    const organizedEvents = await getEventsByUser({ userId, page: eventsPage })
 
 
   return (
@@ -22,7 +32,7 @@ const ProfilePage = async () => {
                 <h3 className="h3-bold text-center sm:text-left">Moje bilety</h3>
                 <Button asChild
                 size="lg"
-                className="button hidden sm:flex"
+                className="button hidden bg-customGreen hover:bg-customGreen2 sm:flex"
                 >
                     <Link
                         href="/#events"
@@ -33,19 +43,19 @@ const ProfilePage = async () => {
             </div>
         </section>
 
-        {/* <section className="wrapper my-8">
+        <section className="wrapper my-8">
             <Collection 
-                data={events?.data}
+                data={orderedEvents}
                 emptyTitle="Brak posiadanych biletów na obecne wydarzenia"
                 emptyStateSubtext="Nie martw się - mnóstwo wydarzeń 
                 ciągle na Ciebie czeka"
                 collectionType="My_Tickets"
                 limit={3}
-                page={1}
+                page={ordersPage}
                 urlParamName="ordersPage"
-                totalPages={2}
+                totalPages={orders?.totalPages}
             />
-        </section> */}
+        </section>
 
         {/* Events Organized */}
 
@@ -56,7 +66,7 @@ const ProfilePage = async () => {
                 <h3 className="h3-bold text-center sm:text-left">Wydarzenia zorganizowane przeze mnie</h3>
                 <Button asChild
                 size="lg"
-                className="button hidden sm:flex"
+                className="button hidden bg-customGreen hover:bg-customGreen2 sm:flex"
                 >
                     <Link
                         href="/events/create"
@@ -73,10 +83,10 @@ const ProfilePage = async () => {
                 emptyTitle="Brak utworzonych wydarzeń"
                 emptyStateSubtext="Nie martw się - możesz stworzyć je w dowolnym momencie"
                 collectionType="Events_Organized"
-                limit={6}
-                page={1}
+                limit={3}
+                page={eventsPage}
                 urlParamName="eventsPage"
-                totalPages={2}
+                totalPages={organizedEvents?.totalPages}
             />
         </section>
     </>

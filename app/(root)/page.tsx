@@ -3,12 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import Collection from "@/components/ui/shared/Collection";
 import { getAllEvents } from "@/lib/actions/event.actions";
+import Search from "@/components/ui/shared/Search";
+import { SearchParamProps } from "@/types";
+import CategoryFilter from "@/components/ui/shared/CategoryFilter";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamProps) {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || '';
+  const category = (searchParams?.category as string) || '';
+
   const events = await getAllEvents({
-    query: '',
-    category: '',
-    page: 1,
+    query: searchText,
+    category,
+    page,
     limit: 6
   })
 
@@ -22,7 +29,7 @@ export default async function Home() {
           <div className="flex flex-col justify-center gap-8">
             <h1 className="h1-bold">Wejdź, zarezerwuj, korzystaj. Wszystko w jednym miejscu.</h1>
             <p className="p-regular-20 md:p-regular-24">Odkryj magię nocy saunowych i urok luksusowego wypoczynku w Tarninowym Wzgórzu. Zarezerwuj swój idealny pobyt i zanurz się w spokojnej harmonii natury oraz wyjątkowej gościnności.</p>
-            <Button size="lg" asChild className="button w-full sm:w-fit">
+            <Button size="lg" asChild className="button bg-customGreen hover:bg-customGreen2 w-full sm:w-fit">
               <Link href="#events">
                 Odkryj
               </Link>
@@ -47,8 +54,8 @@ export default async function Home() {
         </h2>
 
         <div className="flex w-full flex-col gap-5 md:flex-row">
-          Search
-          CategoryFilter
+          <Search />
+          <CategoryFilter />
         </div>
 
         <Collection 
@@ -57,8 +64,8 @@ export default async function Home() {
           emptyStateSubtext="Odwiedź nas ponownie za jakiś czas"
           collectionType="All_Events"
           limit={6}
-          page={1}
-          totalPages={2}
+          page={page}
+          totalPages={events?.totalPages}
         />
       </section>
     </>

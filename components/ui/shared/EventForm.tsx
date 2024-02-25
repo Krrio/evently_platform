@@ -118,7 +118,7 @@ type EventFormProps = {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input placeholder="Event title" {...field} className="input-field" />
+                    <Input placeholder="Nazwa wydarzenia" {...field} className="input-field" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +145,7 @@ type EventFormProps = {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl className="h-72">
-                      <Textarea placeholder="Description" {...field} className="textarea rounded-2xl" />
+                      <Textarea placeholder="Opis" {...field} className="textarea rounded-2xl" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -184,7 +184,7 @@ type EventFormProps = {
                           height={24}
                         />
   
-                        <Input placeholder="Event location or Online" {...field} className="input-field" />
+                        <Input placeholder="Lokalizacja lub Online" {...field} className="input-field" />
                       </div>
   
                     </FormControl>
@@ -209,7 +209,7 @@ type EventFormProps = {
                           height={24}
                           className="filter-grey"
                         />
-                        <p className="ml-3 whitespace-nowrap text-grey-600">Start Date:</p>
+                        <p className="ml-3 whitespace-nowrap text-grey-600">Data rozpoczęcia:</p>
                         <DatePicker 
                           selected={field.value} 
                           onChange={(date: Date) => field.onChange(date)} 
@@ -240,7 +240,7 @@ type EventFormProps = {
                           height={24}
                           className="filter-grey"
                         />
-                        <p className="ml-3 whitespace-nowrap text-grey-600">End Date:</p>
+                        <p className="ml-3 whitespace-nowrap text-grey-600">Data zakończenia:</p>
                         <DatePicker 
                           selected={field.value} 
                           onChange={(date: Date) => field.onChange(date)} 
@@ -273,7 +273,7 @@ type EventFormProps = {
                           height={24}
                           className="filter-grey"
                         />
-                        <Input type="number" placeholder="Price" {...field} className="p-regular-16 border-0 bg-grey-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0" />
+                        <Input type="number" placeholder="Cena" {...field} className="p-regular-16 border-0 bg-grey-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0" />
                         <FormField
                           control={form.control}
                           name="isFree"
@@ -329,7 +329,7 @@ type EventFormProps = {
             type="submit"
             size="lg"
             disabled={form.formState.isSubmitting}
-            className="button col-span-2 w-full"
+            className="button bg-customGreen hover:bg-customGreen2 col-span-2 w-full"
           >
             {form.formState.isSubmitting ? (
               'Submitting...'
